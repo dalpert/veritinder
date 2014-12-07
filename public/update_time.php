@@ -80,8 +80,40 @@
            apologize("Your Saturday is over before it began!");
         }
              
-        /*$dropdownsFilled = 0;
-        if ($_POST["satStart"])*/
+        // checks that at least 3 days have valid times
+        $dropdownsFilled = 0;
+        if ($_POST["sunStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($_POST["monStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($_POST["tuesStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($_POST["wedStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($_POST["thursStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($_POST["friStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($_POST["satStart"])
+        {
+            $dropdownsFilled++;
+        }
+        if ($dropdownsFilled < 3)
+        {
+            apologize("You're telling me you're not free at least three days?! Love stops for nothing!");
+        }
             
          
          
@@ -99,6 +131,19 @@
             apologize("Error occurred");
         }
         
+        // check for matches
+        $crushes = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);
+        $matchIDs = checkMatch($crushes[0]);
+        $userFreeTimes = createTimeArray($_SESSION["id"]);
+        foreach ($matchIDs as $matchID)
+        {
+            $crushFreeTimes = createTimeArray($matchID);
+            $sharedFreeTimes = findSharedFreeTimes($userFreeTimes, $crushFreeTimes);
+            $chosenDate = setUpDate($sharedFreeTimes);
+            $email1 = idToEmail($_SESSION["id"]);
+            $email2 = idToEmail($matchID);
+            emailMatches($email1, $email2, $chosenDate[0], $chosenDate[1], $chosenDate[2]);
+        }
         
         redirect("crush_portfolio.php");
     }

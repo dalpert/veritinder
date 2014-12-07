@@ -357,7 +357,7 @@
     { 
         $availability = query("SELECT $dayStart, $dayEnd FROM times WHERE id = ?", $userID);
         $startInt = ($day * HOURS) + $availability[0][$dayStart];
-        $endInt = ($day * HOURS) + $availability[0][$dayEnd];
+        $endInt = ($day * HOURS) + $availability[0][$dayEnd] - 1;
 
         if (($endInt % 24) != 0)
         {
@@ -372,8 +372,8 @@
     
         
         
-   function findSharedFreeTimes($timesFree1, $timesFree2)
-   {     
+    function findSharedFreeTimes($timesFree1, $timesFree2)
+    {     
         $bothFree = [];
         $counter = 0;
         $timesLength = count($timesFree1);
@@ -385,49 +385,156 @@
                 $counter++;
             }
         }
-        dump($bothFree);
+        //dump($bothFree);
         return $bothFree;
-   }
+    }
     
-    function emailMatches($address1, $address2)
+    function setUpDate($sharedFreeTimes)
+    {
+        $highest = $sharedFreeTimes[count($sharedFreeTimes) - 1];
+        $location = chooseLocation(modTime($highest));
+        $dateTimeArray = intToDate($highest);
+        $day = intToDay($dateTimeArray[0]);
+        $time = intToFormattedTime($dateTimeArray[1]);
+
+        return [$day, $time, $location]; 
+    } 
+    
+    function intToDate($int)
+    {
+        $day = 0;
+        while ($int > HOURS)
+        {
+            $int -= HOURS;
+            $day++;
+        }
+        $time = $int;
+        return [$day, $time]; 
+    }
+    
+    function intToDay($int)
+    {
+        if ($int == 0)
+        {
+            return "SUNDAY";
+        } 
+        if ($int == 1)
+        {
+            return "MONDAY";
+        }
+        if ($int == 2)
+        {
+            return "TUESDAY";
+        }
+        if ($int == 3)
+        {
+            return "WEDNESDAY";
+        }
+        if ($int == 4)
+        {
+            return "THURSDAY";
+        }
+        if ($int == 5)
+        {
+            return "FRIDAY";
+        }
+        if ($int == 6)
+        {
+            return "SATURDAY";
+        }
+        
+    }
+    
+    function intToFormattedTime($int)
+    {
+        if ($int > 12)
+        {
+            $int -= 12;
+            $time = $int . ":00 PM";
+            return $time;
+        }
+        else
+        {
+            $time = $int . ":00 AM";
+            return $time;
+        } 
+    }
+    
+    // takes in int from 0-167 and returns int from 0-23
+    function modTime($int)
+    {
+        $int = $int % HOURS;
+        return $int;
+    }
+    
+    function chooseLocation($time)
+    {
+        //dump($time);
+        $breakfastLocations = ["STARBUCKS on Mass Ave", "ZOE'S", "ZINNEKEN'S"];
+        $lunchLocations = ["OGGI'S", "FLAT PATTIES", "FELIPE'S"];
+        $dinnerLocations = ["JOHN HARVARD'S BREWERY & ALE HOUSE", "BORDER CAFE", "SPICE", "FIRE & ICE"];
+        if ($time > 0 && $time < 10)
+        {
+            $locationNum = rand(0, count($breakfastLocations) - 1);
+            $location = $breakfastLocations[$locationNum];
+        }
+        else if ($time >= 10 && $time <= 16)
+        {
+            $locationNum = rand(0, count($lunchLocations) - 1);
+            //dump($locationNum);
+            $location = $lunchLocations[$locationNum];
+            //dump($location);
+        }
+        else
+        {
+            $locationNum = rand(0, count($dinnerLocations) - 1);
+            $location = $dinnerLocations[$locationNum];
+        }
+        return $location;         
+    }
+    
+    function idToEmail($id)
+    {
+        $emailArray = query("SELECT email FROM users WHERE id = ?", $id);
+        $email = $emailArray[0]["email"];
+        return $email;
+    }
+    
+    function emailMatches($address1, $address2, $day, $time, $location)
     {
         require("PHPMailer-master/PHPMailerAutoload.php");
         require("PHPMailer-master/class.phpmailer.php"); 
         $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Host = "mail.gmail.com";
-        $mail->SMTPDebug = 1;
+        //$mail->SMTPDebug = 1;
         
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = "ssl";
         $mail->Host = "smtp.gmail.com";
-        $mail->Port = 456;
+        $mail->Port = 465;
         $mail->Username = 'veritinder@gmail.com';
         $mail->Password = 'dickle123';
         $mail->SetFrom('veritinder@gmail.com', 'VeriTinder');
         $mail->AddReplyTo('veritinder@gmail.com', 'VeriTinder');
-        $mail->AddAddress($address1);
-        $mail->AddAddress($address2);
+        $mail->AddBCC($address1);
+        $mail->AddBCC($address2);
         $mail->Subject = "New VeriTinder Match!";
-        $mail->Body = "You have a match!";
+        $mail->Body = "Congratulations on your match!
+                
+Your date is on the next possible $day at $time! Meet at $location. Get pumped!
+    
+If you don't know how VeriTinder works, one of your crushes has liked you back! Here's the catch: we aren't telling you which one--you have to go and meet your crush in person. If today is $day, your meeting will occur next week on $day.
+    
+Please make sure to mention us in your wedding speech :)
+    
+p.s. With any questions, just reply to this email and we'll get back to you.";
         
         if ($mail->Send() === false)
             die($mail->ErrorInfo . "\n");
         
     }
     
-    /*function undoTime($int)
-    {
-        $day;
-        $hour;
-        while ($int > 23)
-        {
-           $int -= 24;
-           $day++;
-        }
-        $hour = $int;
-        
-        $return {$hour, $day}; 
-    }*/
+
 
 ?>

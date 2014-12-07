@@ -1,4 +1,4 @@
-<option value="">Start time...</option>
+<option value="">Start time</option>
 <option value=7>7:00 AM</option>
 <option value=8>8:00 AM</option>
 <option value=9>9:00 AM</option>

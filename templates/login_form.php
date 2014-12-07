@@ -1,6 +1,8 @@
 <br>
 </br>
-
+<h4>Welcome to VeriTinder, the world's largest free match-making website for Harvard students.</h4>
+<br>
+</br>
 <form action="login.php" method="post">
     <fieldset>
         <div class="form-group">

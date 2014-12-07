@@ -1,4 +1,8 @@
 <div>
+<br>
+</div>           
+
+<div>
     <h2>When are you free?</h2>
     <p>Remember, there has to be mutual open time slots with you and a crush to have a date! <br>
         Be liberal with your times!</p>
@@ -94,7 +98,7 @@
     </fieldset>
 </form>
 <div>
-    or <a href="logout.php">log out</a>
+    <a href="logout.php">Log Out</a>
 </div>
 
 

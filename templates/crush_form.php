@@ -1,4 +1,8 @@
 <div>
+<br>
+</div>
+          
+<div>
     <h2>Tell us your secrets!</h2>
     <p>Minimum of one crush</p>
 </div>
@@ -25,5 +29,5 @@
     </fieldset>
 </form>
 <div>
-    or <a href="logout.php">log out</a>
+    <a href="logout.php">Log Out</a>
 </div>

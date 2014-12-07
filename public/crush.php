@@ -53,9 +53,6 @@
                 apologize("Error occurred");
             }
             
-            // check for matches
-            $crushes = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);
-            checkMatch($crushes[0]);
             redirect("time.php");
         }
         else

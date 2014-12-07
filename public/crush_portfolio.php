@@ -3,22 +3,37 @@
     // configuration
     require("../includes/config.php"); 
     
-    // amount of cash user has
-    // $cash = query("SELECT crush1 FROM users WHERE id = ?", $_SESSION["id"]);
-    
-    // looks up a stock by its symbol, adding its attributes to an associative array
     $crushes = [];
     $rows = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);
-    //$timeArray1 = createTimeArray(21);
-    //$timeArray2 = createTimeArray(23);
-    //dump($timeArray2);
-    //$sharedFreeTimes = findSharedFreeTimes(createTimeArray(21), createTimeArray(23));
-    //dump($sharedFreeTimes);
-    //emailMatches("alpert@college.harvard.edu", "dylanfarrell@college.harvard.edu");
-    //$user = checkExistence("dyln.farrell");
-    //dump($user);
-    // render portfolio
-    render("crush_portfolio_form.php", ["crushes" => $rows]);
+
+    $timesArray = query("SELECT sunStart, sunEnd, monStart, monEnd, tuesStart, tuesEnd, wedStart, 
+                        wedEnd, thursStart, thursEnd, friStart, friEnd, satStart, satEnd FROM times 
+                        WHERE id = ?", $_SESSION["id"]);
+    $timesArray2 = [];
+    $timesArray = $timesArray[0];
+    $counter = 0;
+    foreach ($timesArray as $time)
+    {
+        $timesArray2[$counter] = $time;
+        $counter++;
+    }
+    for ($i = 0; $i < $counter; $i++)
+    {
+        if ($timesArray2[$i] != 0)
+        {
+            $timesArray2[$i] = intToFormattedTime($timesArray2[$i]);
+        }
+    }
+    for ($i = 0; $i < $counter; $i += 2)   
+    { 
+        if (($timesArray2[$i] == 0) && ($timesArray2[$i+1] == 0))
+        {
+            $timesArray2[$i] = "Unavailable";
+            $timesArray2[$i+1] = "";
+            
+        }
+    }
+    render("crush_portfolio_form.php", ["crushes" => $rows, "times" => $timesArray2]);
 
 ?>
 

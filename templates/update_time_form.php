@@ -1,4 +1,14 @@
 <div>
+<br>
+</div>
+<div>
+    <a href="crush_portfolio.php">Home Page</a>
+</div>
+<div>
+    <a href="update_crush.php">Update Crushes</a>
+</div>
+
+<div>
     <h2>Has your availibility changed?</h2>
     <p>Remember, there has to be mutual open time slots with you and a crush to have a date! <br>
         Be liberal with your times!</p>
@@ -94,7 +104,7 @@
     </fieldset>
 </form>
 <div>
-    or <a href="logout.php">log out</a>
+    <a href="logout.php">Log Out</a>
 </div>
 
 

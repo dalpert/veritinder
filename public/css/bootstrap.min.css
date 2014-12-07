@@ -912,7 +912,7 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #996600;
+  color: #D6AC30;
   text-decoration: none;
 }
 a:hover,
@@ -959,7 +959,7 @@ img {
           transition: all .2s ease-in-out;
 }
 .times {
-  color:#996600;
+  color:#D6AC30;
 }
 
 .img-circle {
@@ -1183,10 +1183,10 @@ a.text-warning:hover {
   color: #66512c;
 }
 .text-danger {
-  color: #a94442;
+  color: #D6AC30;
 }
 a.text-danger:hover {
-  color: #843534;
+  color: #D6AC30;
 }
 .bg-primary {
   color: #fff;
@@ -6206,4 +6206,6 @@ button.close {
     display: none !important;
   }
 }
+
+  
 /*# sourceMappingURL=bootstrap.css.map */

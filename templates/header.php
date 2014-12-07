@@ -29,13 +29,6 @@
         <div class="container">
 
             <div id="top">
-                <a href="http://cs50/"><img alt="VeriTinder" src="/img/veritinder.png"/></a>
+                <a href="http://veritinder.com/"><img alt="VeriTinder" src="/img/veritinder.png"/></a>
             </div>
-            <div>
-                <a href="update_crush.php">Update Crushes</a>
-            </div>
-            <div>
-                <a href="update_time.php">Update Times</a>
-            </div>            
-
-            <div id="middle">
+        <div id="middle">
