@@ -135,10 +135,17 @@
         {
             $crushFreeTimes = createTimeArray($matchID);
             $sharedFreeTimes = findSharedFreeTimes($userFreeTimes, $crushFreeTimes);
-            $chosenDate = setUpDate($sharedFreeTimes);
             $email1 = idToEmail($_SESSION["id"]);
             $email2 = idToEmail($matchID);
-            emailMatches($email1, $email2, $chosenDate[0], $chosenDate[1], $chosenDate[2]);
+            if (!empty($sharedFreeTimes))
+            {
+                $chosenDate = setUpDate($sharedFreeTimes);
+                emailMatches($email1, $email2, $chosenDate[0], $chosenDate[1], $chosenDate[2]);
+            }
+            else
+            {
+                emailNoSharedTimes($email1, $email2);
+            }   
         }
         
         // display matches onscreen

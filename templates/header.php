@@ -27,7 +27,7 @@
     </style>
 
         <div class="container">
-
+            <br>
             <div id="top">
                 <a href="http://veritinder.com/"><img alt="VeriTinder" src="/img/veritinder.png"/></a>
             </div>

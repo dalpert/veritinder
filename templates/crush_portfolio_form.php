@@ -54,6 +54,6 @@
 
 <div>
     <br>
-        <a href="logout.php">Log Out</a>
+        <a href="logout.php">log out</a>
     </br>
 </div>

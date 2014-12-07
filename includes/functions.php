@@ -499,6 +499,37 @@
         $email = $emailArray[0]["email"];
         return $email;
     }
+    function emailNoSharedTimes($address1, $address2)
+    {
+        require("PHPMailer-master/PHPMailerAutoload.php");
+        require("PHPMailer-master/class.phpmailer.php"); 
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->Host = "mail.gmail.com";
+        //$mail->SMTPDebug = 1;
+        
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = "ssl";
+        $mail->Host = "smtp.gmail.com";
+        $mail->Port = 465;
+        $mail->Username = 'veritinder@gmail.com';
+        $mail->Password = 'dickle123';
+        $mail->SetFrom('veritinder@gmail.com', 'VeriTinder');
+        $mail->AddReplyTo('veritinder@gmail.com', 'VeriTinder');
+        $mail->AddBCC($address1);
+        $mail->AddBCC($address2);
+        $mail->Subject = "New VeriTinder Match!";
+        $mail->Body = "Congratulations on your match! Unfortunately we couldn't find a time that worked for both you and your match.
+        
+Please log back in and update your availability to make this work out. Once you update you will see another email.
+       
+Thank you!
+                   
+p.s. With any questions, just reply to this email and we'll get back to you.";
+        
+        if ($mail->Send() === false)
+            die($mail->ErrorInfo . "\n");        
+    }
     
     function emailMatches($address1, $address2, $day, $time, $location)
     {

@@ -32,6 +32,13 @@
             apologize("Your email addresses are not the same");
         }
         
+        $checkEmail = query("SELECT * FROM users WHERE email = ?", $_POST["email"]);
+        if (!empty($checkEmail))
+        {
+            apologize("That email address is already in use");
+        }
+        
+        
         // create a "formatted name" (firstname.lastname)
         $formattedname = strtolower($_POST["firstname"]) . "." . strtolower($_POST["lastname"]); 
         

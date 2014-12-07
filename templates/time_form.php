@@ -98,7 +98,7 @@
     </fieldset>
 </form>
 <div>
-    <a href="logout.php">Log Out</a>
+    <a href="logout.php">log out</a>
 </div>
 
 

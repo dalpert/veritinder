@@ -13,7 +13,7 @@
     define("DATABASE", "FinalProject");
 
     // your database's password
-    define("PASSWORD", "dickle123");
+    define("PASSWORD", "crimson");
 
     // your database's server
     define("SERVER", "localhost");

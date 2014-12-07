@@ -58,9 +58,26 @@
         
             
         // check for matches
-        $crushes = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);          
-        checkMatch($crushes[0]);
-            
+        $crushes = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);
+        $matchIDs = checkMatch($crushes[0]);
+        $userFreeTimes = createTimeArray($_SESSION["id"]);
+        foreach ($matchIDs as $matchID)
+        {
+            $crushFreeTimes = createTimeArray($matchID);
+            $sharedFreeTimes = findSharedFreeTimes($userFreeTimes, $crushFreeTimes);
+            $email1 = idToEmail($_SESSION["id"]);
+            $email2 = idToEmail($matchID);
+            if (!empty($sharedFreeTimes))
+            {
+                $chosenDate = setUpDate($sharedFreeTimes);
+                emailMatches($email1, $email2, $chosenDate[0], $chosenDate[1], $chosenDate[2]);
+            }
+            else
+            {
+                emailNoSharedTimes($email1, $email2);
+            }   
+        }
+        
         redirect("crush_portfolio.php");
     }
     
