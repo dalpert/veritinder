@@ -169,118 +169,146 @@
         }
     }
     
-    // matching function
+    /*
+     ** matching function that takes in an array of three crushes and returns an array
+     ** of the ids of the crushes who are matches
+     */ 
     function checkMatch($crushes)
     {
+        // initializes array $matches which will ultimately contain the ids of any matches that we find
         $matches = [];
+        
+        // initializes counter to keep track of the number of elements in matches
         $counter = 0;
-        //dump($crushes["crush1"]);
+        
+        // initializes three booleans to false that say if each of user's three crushes is a match 
         $crush1match = FALSE;
         $crush2match = FALSE;
         $crush3match = FALSE;
-        //dump(checkExistence($crushes[0]["crush1"]));
+        
+        // checks if crush1 has the user listed as one of his/her crushes
         if (checkExistence($crushes["crush1"]))
         {    
+            // extract crush1's id and an array of his/her three crushes
             $crush1ID = query("SELECT id FROM users WHERE formattedname = ?", $crushes["crush1"]);
             $crushes1 = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $crush1ID[0]["id"]);
+            
+            // extract current user's formatted name
             $userArray = query("SELECT formattedname FROM users WHERE id = ?", $_SESSION["id"]); 
-            //dump($username);
             $username = $userArray[0]["formattedname"];
+            
+            // compare crush1's crush1 with username to see if there is a match
             if (strcmp($username, $crushes1[0]["crush1"]) == 0)
             {
                 query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $crush1ID[0]["id"]);
                 $crush1match = TRUE;
-            }            
+            }
+            
+            // same as above but with crush1's crush2            
             if (strcmp($username, $crushes1[0]["crush2"]) == 0)
             {
-                query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
+               query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus2 = ? WHERE id = ?", TRUE, $crush1ID[0]["id"]);
                 $crush1match = TRUE;
             }
+            
+            // same as above but with crush1's crush3            
             if (strcmp($username, $crushes1[0]["crush3"]) == 0)
             {
                 query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus3 = ? WHERE id = ?", TRUE, $crush1ID[0]["id"]);
                 $crush1match = TRUE;
             }
+            
+            // adds crush1 to matches array if crush1 is a match
             if ($crush1match == TRUE)
             {
                 $matches[$counter] = $crush1ID[0]["id"];
                 $counter++;
             }
-        } 
+        }
+        
+        // checks if crush1 has the user listed as one of his/her crushes
         if (checkExistence($crushes["crush2"]))
         {    
             $crush2ID = query("SELECT id FROM users WHERE formattedname = ?", $crushes["crush2"]);
-            //dump($crush2ID);
             $crushes2 = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $crush2ID[0]["id"]);
+            
             $userArray = query("SELECT formattedname FROM users WHERE id = ?", $_SESSION["id"]); 
-            //dump($username);
             $username = $userArray[0]["formattedname"];
+            
             if (strcmp($username, $crushes2[0]["crush1"]) == 0)
             {
                 query("UPDATE crushes SET matchstatus2 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $crush2ID[0]["id"]);
                 $crush2match = TRUE;
             }            
+            
             if (strcmp($username, $crushes2[0]["crush2"]) == 0)
             {
                 query("UPDATE crushes SET matchstatus2 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus2 = ? WHERE id = ?", TRUE, $crush2ID[0]["id"]);
                 $crush2match = TRUE;
             }
+            
             if (strcmp($username, $crushes2[0]["crush3"]) == 0)
             {
                 query("UPDATE crushes SET matchstatus2 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus3 = ? WHERE id = ?", TRUE, $crush2ID[0]["id"]);
                 $crush2match = TRUE;
             }
+            
             if ($crush2match == TRUE)
             {
                 $matches[$counter] = $crush2ID[0]["id"];
                 $counter++;
             }
         } 
+        
+        // checks if crush1 has the user listed as one of his/her crushes
         if (checkExistence($crushes["crush3"]))
         {    
             $crush3ID = query("SELECT id FROM users WHERE formattedname = ?", $crushes["crush3"]);
             $crushes3 = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $crush3ID[0]["id"]);
+            
             $userarray = query("SELECT formattedname FROM users WHERE id = ?", $_SESSION["id"]); 
-            //dump($username);
             $username = $userarray[0]["formattedname"];
+            
             if (strcmp($username, $crushes3[0]["crush1"])==0)
             {
                 query("UPDATE crushes SET matchstatus3 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus1 = ? WHERE id = ?", TRUE, $crush3ID[0]["id"]);
                 $crush3match = TRUE;
             }            
+            
             if (strcmp($username, $crushes3[0]["crush2"])==0)
             {
                 query("UPDATE crushes SET matchstatus3 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus2 = ? WHERE id = ?", TRUE, $crush3ID[0]["id"]);
                 $crush3match = TRUE;
             }
-            if (strcmp($username, $crushes3[0]["crush3"])==0)
+            
+            if (strcmp($username, $crushes3[0]["crush3"])==0)    
             {
                 query("UPDATE crushes SET matchstatus3 = ? WHERE id = ?", TRUE, $_SESSION["id"]);
                 query("UPDATE crushes SET matchstatus3 = ? WHERE id = ?", TRUE, $crush3ID[0]["id"]);
                 $crush3match = TRUE;
             }
+            
             if ($crush3match == TRUE)
             {
                 $matches[$counter] = $crush3ID[0]["id"];
                 $counter++;
             }
-        } 
-        //dump($matches);   
+        }
         return $matches;   
     }
     
+    // checks if user is in database and returns a boolean
     function checkExistence($user)
     {
         $userID = query("SELECT id FROM users WHERE formattedname = ?", $user);
-       // dump($userID);
         if (empty($userID))
         {
             return FALSE;
@@ -288,6 +316,7 @@
         return TRUE;
     }
     
+    // not sure if we want this. never gets called
     function createUserArray()
     {
         // array of all users ($users[i]["formattedname"];)
@@ -295,6 +324,7 @@
         return $users;
     }
     
+    // takes a first name and a last name and creates the formatted name ("first.last")
     function formatName($first, $last)
     {
         if (!empty($first) && !empty($last))
@@ -308,16 +338,24 @@
         return $formattedname;
     }
     
+    // takes a formatted name and creates an unformatted name ("First Last")
     function unformatName($formattedname)
     {
         if ($formattedname == "")
         {
             return $formattedname;
         }
+        
+        // initialize unformatted name as copy of formatted name
         $unformatted = $formattedname;
+        
+        // capitalize the first letter
         $unformatted[0]= strtoupper($unformatted[0]);
+        
+        // iterate through the name
         for ($i = 0; $i < strlen($unformatted); $i++)
         {
+            // replace the '.' with a space and capitalize the next letter
             if ($unformatted[$i] == '.')
             {
                 $unformatted[$i] = ' ';
@@ -327,16 +365,14 @@
         return $unformatted;
     }
     
-        
+    /*
+     ** takes in a user id and creates an array of the times he/she is free, which is an array with 168 indices,
+     ** one for each hour in a week, with true values for hours when the user is free and false values otherwise 
+     */    
     function createTimeArray($userID)
     {
         // initially set all time slots to false
         $timesFree = array_fill(0, DAYS * HOURS, 0);
-        //dump($timesFree);
-        /*for ($i = 0; $n = count($timesFree), $i < $n; $i++)
-        {
-            $timesFree[$i] = FALSE;
-        }*/
         
         // set all free times for the week
         $timesFree = insertFreeTime(SUNDAY, "sunStart", "sunEnd", $userID, $timesFree);
@@ -346,19 +382,22 @@
         $timesFree = insertFreeTime(THURSDAY, "thursStart", "thursEnd", $userID, $timesFree);
         $timesFree = insertFreeTime(FRIDAY, "friStart", "friEnd", $userID, $timesFree);
         $timesFree = insertFreeTime(SATURDAY, "satStart", "satEnd", $userID, $timesFree);
-        //dump($timesFree);
-        return $timesFree;
-        //dump($availability0);
         
+        return $timesFree;      
     }
     
-    // get free hours for one day from SQL and change array to TRUE accordingly
+    /* 
+     ** gets the hours a user is free on a specific day from SQL and inserts a value of TRUE into 
+     ** that user's timesFree array at indices where the user is free during the week
+     */
     function insertFreeTime($day, $dayStart, $dayEnd, $userID, $timesFree)
     { 
         $availability = query("SELECT $dayStart, $dayEnd FROM times WHERE id = ?", $userID);
+        
+        // takes dayStart and dayEnd and converts them their corresponding hour in the week
         $startInt = ($day * HOURS) + $availability[0][$dayStart];
         $endInt = ($day * HOURS) + $availability[0][$dayEnd] - 1;
-
+        
         if (($endInt % 24) != 0)
         {
             for ($i = $startInt; $i <= $endInt; $i++)
@@ -370,8 +409,7 @@
         return $timesFree;
     }
     
-        
-        
+    // compares the arrays of times free for each person and returns an array of the hours that both of them are free   
     function findSharedFreeTimes($timesFree1, $timesFree2)
     {     
         $bothFree = [];
@@ -379,18 +417,20 @@
         $timesLength = count($timesFree1);
         for ($i = 0; $i < $timesLength; $i++)
         {
+            // if both are free, add to bothFree
             if ($timesFree1[$i] == 1 && $timesFree2[$i] == 1)
             {
                 $bothFree[$counter] = $i;
                 $counter++;
             }
         }
-        //dump($bothFree);
         return $bothFree;
     }
     
+    // takes in an array of shared free times and returns an array of a day, time, and location for a date
     function setUpDate($sharedFreeTimes)
     {
+        // the date will be the latest possible date that both are free in the week
         $highest = $sharedFreeTimes[count($sharedFreeTimes) - 1];
         $location = chooseLocation(modTime($highest));
         $dateTimeArray = intToDate($highest);
@@ -400,6 +440,7 @@
         return [$day, $time, $location]; 
     } 
     
+    // takes in an int 0-167 (representing an hour in the week), and returns a corresponding day and time
     function intToDate($int)
     {
         $day = 0;
@@ -412,6 +453,7 @@
         return [$day, $time]; 
     }
     
+    // takes in an integer and returns a string of the day corresponding to the int
     function intToDay($int)
     {
         if ($int == 0)
@@ -445,6 +487,7 @@
         
     }
     
+    // takes in an integer and turns it into a well-formatted time (i.e. 17 to "5:00 PM")
     function intToFormattedTime($int)
     {
         if ($int > 12)
@@ -467,9 +510,10 @@
         return $int;
     }
     
+    // takes in the time the date will happen and accordingly chooses a location
     function chooseLocation($time)
     {
-        //dump($time);
+        // hardcoded in locations for dates in Harvard Square
         $breakfastLocations = ["STARBUCKS on Mass Ave", "ZOE'S", "ZINNEKEN'S"];
         $lunchLocations = ["OGGI'S", "FLAT PATTIES", "FELIPE'S"];
         $dinnerLocations = ["JOHN HARVARD'S BREWERY & ALE HOUSE", "BORDER CAFE", "SPICE", "FIRE & ICE"];
@@ -481,9 +525,7 @@
         else if ($time >= 10 && $time <= 16)
         {
             $locationNum = rand(0, count($lunchLocations) - 1);
-            //dump($locationNum);
             $location = $lunchLocations[$locationNum];
-            //dump($location);
         }
         else
         {
@@ -493,12 +535,15 @@
         return $location;         
     }
     
+    // takes in an id number and returns that user's email address
     function idToEmail($id)
     {
         $emailArray = query("SELECT email FROM users WHERE id = ?", $id);
         $email = $emailArray[0]["email"];
         return $email;
     }
+    
+    // takes in two email addresses of matches and sends an email notifying they have no times that match up
     function emailNoSharedTimes($address1, $address2)
     {
         require("PHPMailer-master/PHPMailerAutoload.php");
@@ -506,8 +551,7 @@
         $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Host = "mail.gmail.com";
-        //$mail->SMTPDebug = 1;
-        
+        //$mail->SMTPDebug = 1; (use for debugging purposes)        
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = "ssl";
         $mail->Host = "smtp.gmail.com";
@@ -531,6 +575,7 @@ p.s. With any questions, just reply to this email and we'll get back to you.";
             die($mail->ErrorInfo . "\n");        
     }
     
+    // takes in the emails of matches, along with info about their date, and sends an email to both users
     function emailMatches($address1, $address2, $day, $time, $location)
     {
         require("PHPMailer-master/PHPMailerAutoload.php");
@@ -538,8 +583,7 @@ p.s. With any questions, just reply to this email and we'll get back to you.";
         $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Host = "mail.gmail.com";
-        //$mail->SMTPDebug = 1;
-        
+        //$mail->SMTPDebug = 1; (debugging purposes)       
         $mail->SMTPAuth = true;
         $mail->SMTPSecure = "ssl";
         $mail->Host = "smtp.gmail.com";
@@ -565,7 +609,4 @@ p.s. With any questions, just reply to this email and we'll get back to you.";
             die($mail->ErrorInfo . "\n");
         
     }
-    
-
-
 ?>

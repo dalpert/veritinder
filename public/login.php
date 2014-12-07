@@ -55,5 +55,4 @@
         // else apologize
         apologize("Invalid email and/or password");
     }
-
 ?>

@@ -60,7 +60,4 @@
             apologize("You already entered crushes");
         }
     }
-    
-    
-
 ?>

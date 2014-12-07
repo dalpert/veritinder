@@ -57,7 +57,10 @@
         }
         
             
-        // check for matches
+        /*
+        ** for each match the user has, create an array for the crush's free times, create an array of the hours that
+        ** both crushes have in common, get the email addresses of both users, and email them their blind date info
+        */
         $crushes = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);
         $matchIDs = checkMatch($crushes[0]);
         $userFreeTimes = createTimeArray($_SESSION["id"]);
@@ -72,6 +75,8 @@
                 $chosenDate = setUpDate($sharedFreeTimes);
                 emailMatches($email1, $email2, $chosenDate[0], $chosenDate[1], $chosenDate[2]);
             }
+            
+            // in case there are no matching times
             else
             {
                 emailNoSharedTimes($email1, $email2);
@@ -80,7 +85,4 @@
         
         redirect("crush_portfolio.php");
     }
-    
-    
-
 ?>

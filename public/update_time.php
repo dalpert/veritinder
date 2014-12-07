@@ -115,9 +115,6 @@
             apologize("You're telling me you're not free at least three days?! Love stops for nothing!");
         }
             
-         
-         
-         
         // update times
         $result = query("UPDATE times SET sunStart = ?, sunEnd = ?, monStart = ?, monEnd = ?, tuesStart = ?, 
                        tuesEnd = ?, wedStart = ?, wedEnd = ?, thursStart = ?, thursEnd = ?, friStart = ?, friEnd = ?, 
@@ -134,6 +131,11 @@
         // check for matches
         $crushes = query("SELECT crush1, crush2, crush3 FROM crushes WHERE id = ?", $_SESSION["id"]);
         $matchIDs = checkMatch($crushes[0]);
+        
+        /*
+        ** for each match the user has, create an array for the crush's free times, create an array of the hours that
+        ** both crushes have in common, get the email addresses of both users, and email them their blind date info
+        */
         foreach ($matchIDs as $matchID)
         {
             $crushFreeTimes = createTimeArray($matchID);
@@ -145,6 +147,8 @@
                 $chosenDate = setUpDate($sharedFreeTimes);
                 emailMatches($email1, $email2, $chosenDate[0], $chosenDate[1], $chosenDate[2]);
             }
+            
+            // in case there are no matching times
             else
             {
                 emailNoSharedTimes($email1, $email2);
@@ -153,7 +157,4 @@
         
         redirect("crush_portfolio.php");
     }
-    
-    
-
 ?>

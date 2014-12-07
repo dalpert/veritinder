@@ -35,6 +35,4 @@
     
     //hours in a day
     define("HOURS", 24);
-    
-
 ?>

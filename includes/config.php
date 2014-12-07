@@ -28,5 +28,4 @@
             redirect("login.php");
         }
     }
-
 ?>

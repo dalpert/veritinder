@@ -59,5 +59,4 @@
             redirect("crush.php");
         }
     }
-
 ?>
