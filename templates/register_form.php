@@ -1,4 +1,10 @@
 <br>
+
+<h5>You enter up to three crushes.</h5>
+<h5>If one of your crushes likes you back,</h5>
+<h5>we'll make it happen.</h5>
+
+<br>
 </br>
 
 <form action="register.php" method="post">

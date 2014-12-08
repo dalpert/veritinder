@@ -556,7 +556,7 @@
         $mail->SMTPSecure = "ssl";
         $mail->Host = "smtp.gmail.com";
         $mail->Port = 465;
-        $mail->Username = 'veritinder2@gmail.com';
+        $mail->Username = 'veritinder1@gmail.com';
         $mail->Password = 'dickle123';
         $mail->SetFrom('veritinder1@gmail.com', 'VeriTinder');
         $mail->AddReplyTo('veritinder1@gmail.com', 'VeriTinder');

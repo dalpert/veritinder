@@ -31,17 +31,7 @@
             $times[$i] = intToFormattedTime($times[$i]);
         }
     }
-    // take pairs of 0 times (which are where the user has not input any information)
-    // and change the first to to "Unavailable" and the second to "-"
-    for ($i = 0; $i < $counter; $i += 2)   
-    { 
-        if (($times[$i] == 0) && ($times[$i+1] == 0))
-        {
-            $times[$i] = "Unavailable";
-            $times[$i+1] = "";
-            
-        }
-    }
+
     render("crush_portfolio_form.php", ["crushes" => $rows, "times" => $times]);
 ?>
 
